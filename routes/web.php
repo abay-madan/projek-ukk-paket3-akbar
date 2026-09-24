@@ -4,7 +4,7 @@ use App\Http\Controllers\AspirasiController;
 use App\Http\Controllers\AuthController;
 // Bawaan laravel (opsional, biarkan saja)
 Route::get('/', function () {
-    return view('login');
+    return view('auth.login');
 });
 
 // Route baru untuk ngetes template
