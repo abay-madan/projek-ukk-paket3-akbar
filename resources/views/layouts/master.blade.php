@@ -61,6 +61,13 @@
                             <p>Histori Aspirasi</p>
                         </a>
                     </li>
+                    <li class="nav-item mt-3">
+                        <!-- Tombol Logout -->
+                        <a href="{{ url('/logout') }}" class="nav-link text-danger" onclick="return confirm('Yakin mau keluar wak?')">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

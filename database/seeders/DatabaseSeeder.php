@@ -15,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Pakai updateOrCreate: Kalau email udah ada, lewati. Kalau belum, buat baru.
+        \App\Models\User::updateOrCreate(
+            ['email' => 'admin@gmail.com'], // Patokan pencarian
+            [
+                'name' => 'Administrator',
+                'password' => bcrypt('admin123'), 
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Pakai insertOrIgnore: Biar data kategori nggak dobel kalau di-seed ulang
+        \Illuminate\Support\Facades\DB::table('kategoris')->insertOrIgnore([
+            ['id_kategori' => 'Fasilitas & Infrastruktur Sekolah'],
+            ['id_kategori' => 'Kebersihan Lingkungan'],
+            ['id_kategori' => 'Keamanan & Ketertiban'],
+            ['id_kategori' => 'Pelayanan Guru / Staf'],
+            ['id_kategori' => 'Lain-lain'],
         ]);
     }
 }

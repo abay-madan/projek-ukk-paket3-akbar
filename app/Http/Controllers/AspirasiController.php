@@ -75,4 +75,19 @@ class AspirasiController extends Controller
 
         return redirect('/aspirasi')->with('success', 'Aspirasi berhasil diproses dan diberi tanggapan!');
     }
+    // Menampilkan Dashboard Admin
+    public function dashboard()
+    {
+        // Menghitung total semua laporan yang masuk
+        $total = InputAspirasi::count();
+        
+        // Menghitung status berdasarkan tabel tanggapan (aspirasis)
+        $proses = Aspirasi::where('status', 'Proses')->count();
+        $selesai = Aspirasi::where('status', 'Selesai')->count();
+        
+        // Yang menunggu = Total laporan dikurangi yang sudah diproses & selesai
+        $menunggu = $total - ($proses + $selesai);
+
+        return view('dashboard', compact('total', 'menunggu', 'proses', 'selesai'));
+    }
 }
