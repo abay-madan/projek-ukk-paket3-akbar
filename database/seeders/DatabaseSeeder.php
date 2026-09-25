@@ -3,34 +3,29 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // 1. Pakai updateOrCreate: Kalau email udah ada, lewati. Kalau belum, buat baru.
-        \App\Models\User::updateOrCreate(
-            ['email' => 'admin@gmail.com'], // Patokan pencarian
+        // 1. Seeder User / Admin
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'], 
             [
                 'name' => 'Administrator',
                 'password' => bcrypt('admin123'), 
             ]
         );
 
-        // 2. Pakai insertOrIgnore: Biar data kategori nggak dobel kalau di-seed ulang
-        \Illuminate\Support\Facades\DB::table('kategoris')->insertOrIgnore([
-            ['id_kategori' => 'Fasilitas & Infrastruktur Sekolah'],
-            ['id_kategori' => 'Kebersihan Lingkungan'],
-            ['id_kategori' => 'Keamanan & Ketertiban'],
-            ['id_kategori' => 'Pelayanan Guru / Staf'],
-            ['id_kategori' => 'Lain-lain'],
+        // 2. Seeder Kategori
+        DB::table('kategoris')->insertOrIgnore([
+            ['id_kategori' => 1, 'ket_kategori' => 'Fasilitas & Infrastruktur'], // Disingkat agar tidak lewat 30 huruf
+            ['id_kategori' => 2, 'ket_kategori' => 'Kebersihan Lingkungan'],
+            ['id_kategori' => 3, 'ket_kategori' => 'Keamanan & Ketertiban'],
+            ['id_kategori' => 4, 'ket_kategori' => 'Pelayanan Guru / Staf'],
+            ['id_kategori' => 5, 'ket_kategori' => 'Lain-lain'],
         ]);
     }
 }
