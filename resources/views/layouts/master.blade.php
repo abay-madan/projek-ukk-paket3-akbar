@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Theme style (AdminLTE) -->
+    <!-- Theme style (AdminLTE v3) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
@@ -24,50 +24,84 @@
         </ul>
     </nav>
 
-    <!-- Sidebar Kiri -->
+    <!-- Main Sidebar Container (Format AdminLTE 3) -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="#" class="brand-link">
-            <span class="brand-text font-weight-light"><b>Pengaduan</b> Sekolah</span>
-        </a>
+        
+        <!-- Brand Logo -->
+<a href="/" class="brand-link">
+    <span class="brand-text font-weight-light text-center d-block">🧾Pengaduan Sarana</span>
+</a>
 
+        <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                    <!-- Menu Dashboard -->
-                    <li class="nav-item">
-                        <a href="/dashboard" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <!-- Menu Siswa (Sesuai Soal) -->
-                    <li class="nav-item">
-                        <a href="/aspirasi/tambah" class="nav-link">
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>Input Aspirasi</p>
-                        </a>
-                    </li>
-                    <!-- Menu Data Aspirasi -->
-                    <li class="nav-item">
-                        <a href="/aspirasi" class="nav-link">
-                            <i class="nav-icon fas fa-list"></i>
-                            <p>Data Aspirasi</p>
-                        </a>
-                    </li>
-                    <!-- Menu Histori Siswa -->
-                    <li class="nav-item">
-                        <a href="/history" class="nav-link">
-                            <i class="nav-icon fas fa-history"></i>
-                            <p>Histori Aspirasi</p>
-                        </a>
-                    </li>
-                    <li class="nav-item mt-3">
-                        <!-- Tombol Logout -->
-                        <a href="{{ url('/logout') }}" class="nav-link text-danger" onclick="return confirm('Yakin mau keluar wak?')">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                    <!-- ========================================== -->
+                    <!-- MENU KHUSUS ADMIN -->
+                    <!-- ========================================== -->
+                    @if(Auth::check())
+                        <li class="nav-header mt-2">MENU ADMIN</li>
+                        
+                        <li class="nav-item">
+                            <a href="/dashboard" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard Admin</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/siswa" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Data Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/aspirasi" class="nav-link">
+                                <i class="nav-icon fas fa-check-square"></i>
+                                <p>Kelola Aspirasi</p>
+                            </a>
+                        </li>
+                    @endif
+
+
+                    <!-- ========================================== -->
+                    <!-- MENU KHUSUS SISWA -->
+                    <!-- ========================================== -->
+                    @if(session()->has('nis_siswa'))
+                        <li class="nav-header mt-2">MENU SISWA</li>
+                        
+                        <li class="nav-item">
+                            <a href="/history" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>Dashboard Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/aspirasi/tambah" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Tulis Aspirasi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/history" class="nav-link">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Histori Laporanku</p>
+                            </a>
+                        </li>
+                    @endif
+
+
+                    <!-- ========================================== -->
+                    <!-- TOMBOL LOGOUT -->
+                    <!-- ========================================== -->
+                    <li class="nav-item mt-4">
+                        <a href="/logout" class="nav-link text-danger">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>Logout</p>
+                            <p>Keluar (Logout)</p>
                         </a>
                     </li>
+
                 </ul>
             </nav>
         </div>
