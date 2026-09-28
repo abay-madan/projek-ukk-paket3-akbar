@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<<<<<<< HEAD
     <!-- Theme style (AdminLTE v3) -->
+=======
+    <!-- Theme style (AdminLTE) -->
+>>>>>>> 3ed1c5f4c0b6f6827a0d43741efb858363b977b8
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
