@@ -12,8 +12,18 @@
         <div class="card-body p-4">
             <h4 class="text-center fw-bold mb-4 text-primary">Portal Pengaduan</h4>
 
+            <!-- Notifikasi Error dari Controller -->
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0 ps-3">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             <form action="{{ url('/login') }}" method="POST">
@@ -34,9 +44,23 @@
                         <label class="form-label">Nomor Induk Siswa (NIS)</label>
                         <input type="number" name="nis" class="form-control" placeholder="Contoh: 10293847">
                     </div>
+                    
+                    <!-- KELAS & JURUSAN SUDAH DIPISAH -->
                     <div class="mb-4">
-                        <label class="form-label">Kelas</label>
-                        <input type="text" name="kelas" class="form-control" placeholder="Contoh: XII RPL 1">
+                        <label class="form-label">Tingkat & Jurusan</label>
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <select name="tingkat" class="form-select">
+                                    <option value="">Tingkat</option>
+                                    <option value="X">X</option>
+                                    <option value="XI">XI</option>
+                                    <option value="XII">XII</option>
+                                </select>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" name="jurusan" class="form-control" placeholder="Cth: RPL 1" autocomplete="off">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -44,7 +68,7 @@
                 <div id="formAdmin" style="display: none;">
                     <div class="mb-3">
                         <label class="form-label">Email Admin</label>
-                        <input type="email" name="email" class="form-control" placeholder="admin@gmail.com">
+                        <input type="email" name="email" class="form-control" placeholder="admin@sekolah.com">
                     </div>
                     <div class="mb-4">
                         <label class="form-label">Password</label>

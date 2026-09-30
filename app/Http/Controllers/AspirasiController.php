@@ -41,13 +41,22 @@ class AspirasiController extends Controller
     // 4. Menampilkan riwayat/histori pengaduan (Untuk Siswa)
     public function history()
     {
+        // Ambil NIS siswa yang sedang login dari session
+        $nisLogin = session('nis_siswa');
+
+        // Ambil data khusus punya siswa tersebut
         $data = DB::table('input_aspirasis')
             ->leftJoin('aspirasis', 'input_aspirasis.id_pelaporan', '=', 'aspirasis.id_aspirasi')
             ->select('input_aspirasis.*', 'aspirasis.status', 'aspirasis.feedback')
+            ->where('input_aspirasis.nis', $nisLogin) // Filter biar cuma kelihatan punya dia sendiri
             ->orderBy('input_aspirasis.created_at', 'desc')
             ->get();
 
-        return view('aspirasi.history', compact('data'));
+        // Kita lempar variabel $data sekaligus alias-nya $aspirasi, 
+        // jadi pakai nama apa pun di file Blade-nya, dijamin aman dan gak error!
+        $aspirasi = $data; 
+
+        return view('aspirasi.history', compact('data', 'aspirasi'));
     }
 
     // 5. Menampilkan halaman form untuk ngasih tanggapan (Untuk Admin)
@@ -60,6 +69,9 @@ class AspirasiController extends Controller
 
     public function simpanTanggapan(Request $request, $id)
     {
+        $request->validate([
+            'feedback' => 'required|integer'
+        ]);
         // 1. Cari data laporan aslinya untuk mengambil id_kategori
         $laporan = InputAspirasi::where('id_pelaporan', $id)->first();
 
@@ -69,7 +81,7 @@ class AspirasiController extends Controller
             [
                 'status' => $request->status,
                 'id_kategori' => $laporan->id_kategori, 
-                'feedback' => $request->feedback 
+                'feedback' => $request->feedback,
             ]
         );
 
@@ -89,5 +101,17 @@ class AspirasiController extends Controller
         $menunggu = $total - ($proses + $selesai);
 
         return view('dashboard', compact('total', 'menunggu', 'proses', 'selesai'));
+    }
+
+    // Menghapus data aspirasi dan tanggapannya sekaligus
+    public function destroy($id)
+    {
+        // Hapus data di tabel input_aspirasis
+        InputAspirasi::where('id_pelaporan', $id)->delete();
+        
+        // Hapus juga data tanggapan di tabel aspirasis (kalau ada)
+        Aspirasi::where('id_aspirasi', $id)->delete();
+
+        return redirect('/aspirasi')->with('success', 'Aspirasi berhasil dihapus!');
     }
 }

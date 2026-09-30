@@ -35,9 +35,14 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Tanggapan / Feedback Admin</label>
-                        <textarea name="feedback" class="form-control" rows="4" placeholder="Tulis pesan balasan untuk siswa disini..." required></textarea>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Feedback / Status Penanganan</label>
+                        <!-- Tambahkan class="form-select" dan w-100 biar lebarnya nge-full pas -->
+                        <select name="feedback" class="form-select form-control  w-100" required>
+                            <option value="1">Laporan sedang ditindak lanjuti</option>
+                            <option value="2">Ya, sarana sudah diperbaiki</option>
+                            <option value="0">Sedang Menyampaikan Pesan</option>
+                        </select>
                     </div>
                 </div>
 

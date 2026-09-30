@@ -18,12 +18,26 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 // ==========================================
-// 2. RUTE SISWA (Akses pakai NIS)
+// 2. RUTE SISWA (Akses pakai NIS session manual)
 // ==========================================
+Route::get('/dashboard-siswa', function () {
+    // Mengecek apakah siswa sudah login, kalau belum tendang ke halaman login
+    if (!session()->has('nis_siswa')) {
+        return redirect('/');
+    }
+    // Menampilkan halaman resources/views/siswa/dashboard.blade.php
+    return view('siswa.dashboard');
+});
+
 Route::get('/aspirasi/tambah', [AspirasiController::class, 'create']);
 Route::post('/aspirasi/simpan', [AspirasiController::class, 'store']);
 Route::get('/history', [AspirasiController::class, 'history']);
 
+// Route Hapus Aspirasi (Berdasarkan id_pelaporan)
+Route::get('/aspirasi/hapus/{id}', [AspirasiController::class, 'destroy']);
+
+// Route Hapus Data Siswa (Berdasarkan nis)
+Route::get('/siswa/hapus/{nis}', [SiswaController::class, 'destroy']);
 
 // ==========================================
 // 3. RUTE ADMIN (Wajib Login / Middleware Auth)

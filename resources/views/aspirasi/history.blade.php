@@ -39,10 +39,15 @@
                                 @endif
                             </td>
                             <td>
-                                @if($item->feedback)
-                                    <span class="text-success"><i class="fas fa-check-circle"></i> ID Balasan: {{ $item->feedback }}</span>
+                                <!-- PERBAIKAN UTAMA: Pakai $item->feedback, bukan $aspirasi->feedback -->
+                                @if($item->feedback == 1)
+                                    <span class="badge bg-warning text-dark">Ditindaklanjuti</span>
+                                @elseif($item->feedback == 2)
+                                    <span class="badge bg-success">Sudah Diperbaiki</span>
+                                @elseif($item->feedback == 0)
+                                    <span class="badge bg-info">Menunggu Pesan</span>
                                 @else
-                                    <span class="text-muted"><i>Belum ada tanggapan</i></span>
+                                    <span class="badge bg-secondary">Belum Ditanggapi</span>
                                 @endif
                             </td>
                         </tr>

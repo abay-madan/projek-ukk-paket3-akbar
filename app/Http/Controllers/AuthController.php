@@ -15,40 +15,70 @@ class AuthController extends Controller
 
     public function prosesLogin(Request $request)
     {
-        // Kalau yang dipilih di dropdown adalah Admin
-        if ($request->role == 'admin') {
-            $credentials = $request->validate([
+        // Cek dulu dia milih login sebagai apa di dropdown
+        if ($request->role === 'admin') {
+            
+            // ==========================================
+            // 1. LOGIKA LOGIN ADMIN
+            // ==========================================
+            $request->validate([
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
 
-            if (Auth::attempt($credentials)) {
+            // Cek email dan password admin ke database (tabel users)
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $request->session()->regenerate();
                 return redirect('/dashboard'); // Arahkan ke dashboard admin
             }
-            return back()->with('error', 'Email atau Password Admin salah wak!');
-        } 
-        
-        // Kalau yang dipilih di dropdown adalah Siswa
-        else {
+
+            // Kalau salah, tendang balik bawa pesan error
+            return back()->with('error', 'Email atau Password Admin salah!');
+
+        } else {
+
+            // ==========================================
+            // 2. LOGIKA LOGIN SISWA (DIPERKETAT)
+            // ==========================================
             $request->validate([
-                'nis' => 'required|numeric',
-                'kelas' => 'required'
+                'nis' => 'required|numeric|digits_between:4,10',
+                'tingkat' => 'required',
+                'jurusan' => 'required|string'
+            ], [
+                'nis.required' => 'NIS wajib diisi!',
+                'nis.numeric' => 'NIS hanya boleh angka!',
+                'nis.digits_between' => 'Format NIS harus 4-10 angka!',
+                'tingkat.required' => 'Tingkat kelas wajib dipilih!',
+                'jurusan.required' => 'Jurusan wajib diisi!'
             ]);
 
-            // Cek/Simpan NIS ke database Siswa
-            $siswa = Siswa::firstOrCreate(
-                ['nis' => $request->nis],
-                ['kelas' => $request->kelas]
-            );
+            // Gabungkan Tingkat dan Jurusan (Contoh: "XII" + "RPL 1" = "XII RPL 1")
+            $kelas_lengkap = $request->tingkat . ' ' . $request->jurusan;
 
-            // Simpan NIS ke session
+            // Cek apakah data siswa dengan NIS tersebut sudah ada di database
+            $siswa = Siswa::where('nis', $request->nis)->first();
+
+            if ($siswa) {
+                // JIKA NIS SUDAH ADA: Validasi apakah kelasnya cocok dengan database?
+                if (strtolower(trim($siswa->kelas)) !== strtolower(trim($kelas_lengkap))) {
+                    return back()->with('error', 'Kelas tidak sesuai dengan data NIS yang terdaftar di sekolah!');
+                }
+            } else {
+                // JIKA NIS BELUM ADA: Baru buat data baru (Otomatis daftar untuk siswa baru)
+                $siswa = Siswa::create([
+                    'nis' => $request->nis,
+                    'kelas' => $kelas_lengkap
+                ]);
+            }
+
+            // Buat Session dan Arahkan ke Dashboard Siswa
             session(['nis_siswa' => $siswa->nis]);
-            return redirect('/aspirasi/tambah'); // Arahkan ke form lapor
+            
+            return redirect('/dashboard-siswa'); // Arahkan ke dashboard siswa
         }
     }
 
-   public function logout(Request $request)
+    public function logout(Request $request)
     {
         // 1. Tendang login Admin
         Auth::logout(); 

@@ -9,11 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<<<<<<< HEAD
     <!-- Theme style (AdminLTE v3) -->
-=======
-    <!-- Theme style (AdminLTE) -->
->>>>>>> 3ed1c5f4c0b6f6827a0d43741efb858363b977b8
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
@@ -32,9 +28,9 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         
         <!-- Brand Logo -->
-<a href="/" class="brand-link">
-    <span class="brand-text font-weight-light text-center d-block">🧾Pengaduan Sarana</span>
-</a>
+        <a href="/" class="brand-link">
+            <span class="brand-text font-weight-light">Pengaduan Sarana</span>
+        </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
@@ -76,7 +72,7 @@
                         <li class="nav-header mt-2">MENU SISWA</li>
                         
                         <li class="nav-item">
-                            <a href="/history" class="nav-link">
+                            <a href="/dashboard-siswa" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Dashboard Siswa</p>
                             </a>

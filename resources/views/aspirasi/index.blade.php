@@ -32,7 +32,9 @@
                             <td>{{ $item->ket }}</td>
                             <td class="text-center">
                                 <a href="{{ url('/aspirasi/proses/'.$item->id_pelaporan) }}" class="btn btn-sm btn-info"><i class="fas fa-check"></i> Proses</a>
-                                <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                <a href="{{ url('/aspirasi/hapus/' . $item->id_pelaporan) }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau hapus aspirasi ini?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                         @empty
