@@ -18,9 +18,7 @@ class AuthController extends Controller
         // Cek dulu dia milih login sebagai apa di dropdown
         if ($request->role === 'admin') {
             
-            // ==========================================
-            // 1. LOGIKA LOGIN ADMIN
-            // ==========================================
+            // LOGIKA LOGIN ADMIN
             $request->validate([
                 'email' => 'required|email',
                 'password' => 'required'
@@ -37,9 +35,7 @@ class AuthController extends Controller
 
         } else {
 
-            // ==========================================
-            // 2. LOGIKA LOGIN SISWA (DIPERKETAT)
-            // ==========================================
+            // LOGIKA LOGIN SISWA 
             $request->validate([
                 'nis' => 'required|numeric|digits_between:4,10',
                 'tingkat' => 'required',
@@ -80,17 +76,17 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // 1. Tendang login Admin
+        // Tendang login Admin
         Auth::logout(); 
         
-        // 2. Tendang login Siswa
+        // Tendang login Siswa
         $request->session()->forget('nis_siswa'); 
         
-        // 3. Bersihkan sisa cache session di browser
+        // Bersihkan sisa cache session di browser
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
-        // 4. Arahkan balik ke halaman login
+        // Arahkan balik ke halaman login
         return redirect('/'); 
     }
 }

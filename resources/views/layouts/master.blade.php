@@ -37,10 +37,7 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                    <!-- ========================================== -->
                     <!-- MENU KHUSUS ADMIN -->
-                    <!-- ========================================== -->
                     @if(Auth::check())
                         <li class="nav-header mt-2">MENU ADMIN</li>
                         
@@ -63,11 +60,7 @@
                             </a>
                         </li>
                     @endif
-
-
-                    <!-- ========================================== -->
                     <!-- MENU KHUSUS SISWA -->
-                    <!-- ========================================== -->
                     @if(session()->has('nis_siswa'))
                         <li class="nav-header mt-2">MENU SISWA</li>
                         
@@ -92,9 +85,7 @@
                     @endif
 
 
-                    <!-- ========================================== -->
                     <!-- TOMBOL LOGOUT -->
-                    <!-- ========================================== -->
                     <li class="nav-item mt-4">
                         <a href="/logout" class="nav-link text-danger">
                             <i class="nav-icon fas fa-sign-out-alt"></i>

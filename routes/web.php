@@ -5,9 +5,7 @@ use App\Http\Controllers\AspirasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SiswaController;
 
-// ==========================================
-// 1. RUTE PUBLIC & LOGIN
-// ==========================================
+// RUTE PUBLIC & LOGIN
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -17,9 +15,7 @@ Route::post('/login', [AuthController::class, 'prosesLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 
-// ==========================================
-// 2. RUTE SISWA (Akses pakai NIS session manual)
-// ==========================================
+// RUTE SISWA (Akses pakai NIS session manual)
 Route::get('/dashboard-siswa', function () {
     // Mengecek apakah siswa sudah login, kalau belum tendang ke halaman login
     if (!session()->has('nis_siswa')) {
@@ -39,9 +35,7 @@ Route::get('/aspirasi/hapus/{id}', [AspirasiController::class, 'destroy']);
 // Route Hapus Data Siswa (Berdasarkan nis)
 Route::get('/siswa/hapus/{nis}', [SiswaController::class, 'destroy']);
 
-// ==========================================
-// 3. RUTE ADMIN (Wajib Login / Middleware Auth)
-// ==========================================
+// RUTE ADMIN (Wajib Login / Middleware Auth)
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard Admin

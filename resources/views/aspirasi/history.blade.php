@@ -39,7 +39,7 @@
                                 @endif
                             </td>
                             <td>
-                                <!-- PERBAIKAN UTAMA: Pakai $item->feedback, bukan $aspirasi->feedback -->
+                                
                                 @if($item->feedback == 1)
                                     <span class="badge bg-warning text-dark">Ditindaklanjuti</span>
                                 @elseif($item->feedback == 2)
