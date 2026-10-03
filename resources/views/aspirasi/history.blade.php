@@ -18,6 +18,7 @@
                             <th>Tanggal</th>
                             <th>Lokasi</th>
                             <th>Keterangan</th>
+                            <th class="text-center">Bukti</th> <!-- Kolom Baru -->
                             <th class="text-center">Status</th>
                             <th>Umpan Balik (Feedback)</th>
                         </tr>
@@ -30,23 +31,32 @@
                             <td>{{ $item->lokasi }}</td>
                             <td>{{ $item->ket }}</td>
                             <td class="text-center">
-                                @if($item->status == 'Menunggu' || $item->status == null)
-                                    <span class="badge badge-secondary">Menunggu</span>
-                                @elseif($item->status == 'Proses')
-                                    <span class="badge badge-warning">Diproses</span>
-                                @elseif($item->status == 'Selesai')
-                                    <span class="badge badge-success">Selesai</span>
+                                @if($item->foto)
+                                    <a href="{{ asset('uploads/pengaduan/' . $item->foto) }}" target="_blank" class="btn btn-info btn-sm text-white">
+                                        <i class="fas fa-image"></i> Lihat
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
                                 @endif
                             </td>
-                            <td>
-                                
-                                @if($item->feedback == 1)
-                                    <span class="badge bg-warning text-dark">Ditindaklanjuti</span>
-                                @elseif($item->feedback == 2)
-                                    <span class="badge bg-success">Sudah Diperbaiki</span>
-                                @elseif($item->feedback == 0)
-                                    <span class="badge bg-info">Menunggu Pesan</span>
+                            <!-- Kolom Status Dinamis -->
+                            <td class="text-center">
+                                @if($item->status == 'Selesai')
+                                    <span class="badge bg-success">Selesai</span>
+                                @elseif($item->status == 'Proses')
+                                    <span class="badge bg-warning text-dark">Proses</span>
                                 @else
+                                    <span class="badge bg-secondary">Menunggu</span>
+                                @endif
+                            </td>
+
+                            <!-- Kolom Umpan Balik (Feedback) Langsung Tampil Teks -->
+                            <td>
+                                @if($item->feedback)
+                                    <!-- Jika admin sudah ngisi teks, tampilkan teksnya langsung -->
+                                    <span class="badge bg-light text-dark">{{ $item->feedback }}</span>
+                                @else
+                                    <!-- Jika laporan baru masuk dan belum ditanggapi admin -->
                                     <span class="badge bg-secondary">Belum Ditanggapi</span>
                                 @endif
                             </td>

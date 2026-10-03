@@ -15,19 +15,15 @@ Route::post('/login', [AuthController::class, 'prosesLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 
-// RUTE SISWA (Akses pakai NIS session manual)
-Route::get('/dashboard-siswa', function () {
-    // Mengecek apakah siswa sudah login, kalau belum tendang ke halaman login
-    if (!session()->has('nis_siswa')) {
-        return redirect('/');
-    }
-    // Menampilkan halaman resources/views/siswa/dashboard.blade.php
-    return view('siswa.dashboard');
+// RUTE SISWA (Digembok pakai Middleware CekSiswa)
+Route::middleware([\App\Http\Middleware\CekSiswa::class])->group(function () {
+    Route::get('/dashboard-siswa', function () {
+        return view('siswa.dashboard');
+    });
+    Route::get('/aspirasi/tambah', [AspirasiController::class, 'create']);
+    Route::post('/aspirasi/simpan', [AspirasiController::class, 'store']);
+    Route::get('/history', [AspirasiController::class, 'history']);
 });
-
-Route::get('/aspirasi/tambah', [AspirasiController::class, 'create']);
-Route::post('/aspirasi/simpan', [AspirasiController::class, 'store']);
-Route::get('/history', [AspirasiController::class, 'history']);
 
 // Route Hapus Aspirasi (Berdasarkan id_pelaporan)
 Route::get('/aspirasi/hapus/{id}', [AspirasiController::class, 'destroy']);

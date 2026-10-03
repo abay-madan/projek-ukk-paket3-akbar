@@ -24,6 +24,22 @@
                             <p class="mb-1"><strong>Keterangan:</strong> {{ $data->ket }}</p>
                         </div>
                     </div>
+                    <!-- Menampilkan Foto Bukti Jika Ada -->
+                    <div class="row bg-light p-3 rounded mb-4 mt-2">
+                        <div class="col-12 text-center">
+                            <p class="mb-2 text-start"><strong>Bukti Foto:</strong></p>
+                            @if($data->foto)
+                                <a href="{{ asset('uploads/pengaduan/' . $data->foto) }}" target="_blank">
+                                    <img src="{{ asset('uploads/pengaduan/' . $data->foto) }}" class="img-fluid rounded border border-secondary" style="max-height: 250px; object-fit: contain;" alt="Bukti Laporan">
+                                </a>
+                                <p class="text-muted mt-1" style="font-size: 12px;">*Klik gambar untuk memperbesar</p>
+                            @else
+                                <div class="alert alert-secondary text-center mb-0" role="alert">
+                                    Siswa tidak melampirkan bukti foto.
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
                     <!-- Input untuk Admin -->
                     <div class="form-group">
@@ -36,13 +52,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Feedback / Status Penanganan</label>
-                        <!-- Tambahkan class="form-select" dan w-100 biar lebarnya nge-full pas -->
-                        <select name="feedback" class="form-select form-control  w-100" required>
-                            <option value="1">Laporan sedang ditindak lanjuti</option>
-                            <option value="2">Ya, sarana sudah diperbaiki</option>
-                            <option value="0">Sedang Menyampaikan Pesan</option>
-                        </select>
+                        <label class="form-label fw-bold">Feedback / Detail Penanganan</label>
+                        <textarea name="feedback" class="form-control w-100" rows="4" placeholder="Ketik penjelasan atau tindakan dari sekolah di sini..." required></textarea>
                     </div>
                 </div>
 

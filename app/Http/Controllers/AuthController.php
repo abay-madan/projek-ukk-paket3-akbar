@@ -15,78 +15,59 @@ class AuthController extends Controller
 
     public function prosesLogin(Request $request)
     {
-        // Cek dulu dia milih login sebagai apa di dropdown
         if ($request->role === 'admin') {
-            
-            // LOGIKA LOGIN ADMIN
+            // ==========================================
+            // 1. LOGIKA LOGIN ADMIN
+            // ==========================================
             $request->validate([
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
 
-            // Cek email dan password admin ke database (tabel users)
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $request->session()->regenerate();
-                return redirect('/dashboard'); // Arahkan ke dashboard admin
+                return redirect('/dashboard'); 
             }
 
-            // Kalau salah, tendang balik bawa pesan error
             return back()->with('error', 'Email atau Password Admin salah!');
 
         } else {
-
-            // LOGIKA LOGIN SISWA 
+            // ==========================================
+            // 2. LOGIKA LOGIN SISWA (SANGAT KETAT)
+            // ==========================================
             $request->validate([
-                'nis' => 'required|numeric|digits_between:4,10',
+                'nis' => 'required|numeric',
                 'tingkat' => 'required',
                 'jurusan' => 'required|string'
-            ], [
-                'nis.required' => 'NIS wajib diisi!',
-                'nis.numeric' => 'NIS hanya boleh angka!',
-                'nis.digits_between' => 'Format NIS harus 4-10 angka!',
-                'tingkat.required' => 'Tingkat kelas wajib dipilih!',
-                'jurusan.required' => 'Jurusan wajib diisi!'
             ]);
 
-            // Gabungkan Tingkat dan Jurusan (Contoh: "XII" + "RPL 1" = "XII RPL 1")
             $kelas_lengkap = $request->tingkat . ' ' . $request->jurusan;
 
-            // Cek apakah data siswa dengan NIS tersebut sudah ada di database
+            // Cari data siswa di database
             $siswa = Siswa::where('nis', $request->nis)->first();
 
             if ($siswa) {
-                // JIKA NIS SUDAH ADA: Validasi apakah kelasnya cocok dengan database?
+                // JIKA NIS ADA: Validasi kelasnya
                 if (strtolower(trim($siswa->kelas)) !== strtolower(trim($kelas_lengkap))) {
-                    return back()->with('error', 'Kelas tidak sesuai dengan data NIS yang terdaftar di sekolah!');
+                    return back()->with('error', 'Kelas tidak sesuai dengan data NIS yang terdaftar!');
                 }
             } else {
-                // JIKA NIS BELUM ADA: Baru buat data baru (Otomatis daftar untuk siswa baru)
-                $siswa = Siswa::create([
-                    'nis' => $request->nis,
-                    'kelas' => $kelas_lengkap
-                ]);
+                // JIKA NIS TIDAK ADA: Tolak mentah-mentah! (Tidak ada lagi fitur otomatis daftar)
+                return back()->with('error', 'NIS tidak terdaftar! Anda bukan siswa sekolah ini.');
             }
 
-            // Buat Session dan Arahkan ke Dashboard Siswa
+            // Kalau lolos semua, baru boleh masuk
             session(['nis_siswa' => $siswa->nis]);
-            
-            return redirect('/dashboard-siswa'); // Arahkan ke dashboard siswa
+            return redirect('/dashboard-siswa'); 
         }
     }
 
     public function logout(Request $request)
     {
-        // Tendang login Admin
         Auth::logout(); 
-        
-        // Tendang login Siswa
         $request->session()->forget('nis_siswa'); 
-        
-        // Bersihkan sisa cache session di browser
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        // Arahkan balik ke halaman login
         return redirect('/'); 
     }
 }

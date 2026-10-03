@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('id_aspirasi')->primary(); 
             $table->enum('status', ['Menunggu', 'Proses', 'Selesai']); 
             $table->integer('id_kategori');            
-            $table->integer('feedback');               
+            $table->string('feedback');               
             $table->timestamps();
         });
     }
